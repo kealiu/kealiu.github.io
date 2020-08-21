@@ -47,7 +47,7 @@ Reviewer主要包含了以下方面的代码分析：
 
 登录到AWS Console后，搜索 CodeGuru，即可进入CodeGuru页面。我们可以通过左侧的导航栏或者右侧的下来框进入。
 
-![CodeGuru Console](https://github.com/kealiu/kealiu.github.io/blob/master/images/2020-08-22-CodeGuru/ConsoleMain.JPG)
+![CodeGuru Console](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/ConsoleMain.JPG)
 
 ## 关联 git 仓库
 
@@ -59,7 +59,7 @@ Reviewer主要包含了以下方面的代码分析：
     - 成功登录后，确认授权给AWS
     - 等待关联成功
 
-![Assocaiate Repo](https://github.com/kealiu/kealiu.github.io/blob/master/images/2020-08-22-CodeGuru/associate_repo.JPG)
+![Assocaiate Repo](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/associate_repo.JPG)
 
 
 ## 代码Review
@@ -72,7 +72,7 @@ CodeGuru有两种Review模式：
 
 在PR模式下，开发在开发分支进行代码编写。完成后，提交Pull Requests合并到生产分支。这个时候会促发CodeGuru进行代码Review。
 
-![PullRequest](https://github.com/kealiu/kealiu.github.io/blob/master/images/2020-08-22-CodeGuru/PullRequests.JPG)
+![PullRequest](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/PullRequests.JPG)
 
 
 以 https://github.com/kealiu/amazon-codeguru-reviewer-sample-app 为例，我在dev分支进行了代码修改，准备合并到master分支，所以，我创建了一个Pull Requests，如图
@@ -81,20 +81,20 @@ CodeGuru有两种Review模式：
 
 在提交PullRequests后，CodeGuru会自动检测到该PullRequest并自动进行CodeReview。Review的进度及结果可以在 AWS 控制台CodeGuru Reviewer下面的 Code Reviews中看到。
 
-![CodeReviewResult](https://github.com/kealiu/kealiu.github.io/blob/master/images/2020-08-22-CodeGuru/CodeReviewResult.JPG)
+![CodeReviewResult](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/CodeReviewResult.JPG)
 
 在CodeGuru 分析完成后，我们可以在Code Reviewer中看到，也可以在GitHub上看到对应的comments. 开发可以根据结果进行调整，再合并代码。
-![Comments In GitHub](https://github.com/kealiu/kealiu.github.io/blob/master/images/2020-08-22-CodeGuru/comments.JPG)
+![Comments In GitHub](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/comments.JPG)
 
 ### 全量Review
 
 在CodeGuru Review界面，我们可以进入 Repository analysis 界面，进行全量的代码扫描分析。点击Create Repository Analysis，进入下面的创建页面。
 
-![RepoReview](https://github.com/kealiu/kealiu.github.io/blob/master/images/2020-08-22-CodeGuru/code-repo.JPG)
+![RepoReview](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/code-repo.JPG)
 
 选择已经关联的代码仓库，然后输入期望扫描的分支，创建代码扫描。
 
-![ReviewSelect](https://github.com/kealiu/kealiu.github.io/blob/master/images/2020-08-22-CodeGuru/create_repo_review.JPG)
+![ReviewSelect](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/create_repo_review.JPG)
 
 等待一小会，扫描完成后点击对应的分析项，即可进入查看详情。内容与PR扫描类似。
 
