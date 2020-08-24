@@ -263,6 +263,17 @@ thead {
   vertical-align: bottom;
 }
 
+tbody {
+  font-family: Helvetica,Arial,sans-serif;
+  letter-spacing: .01em;
+  color: #777;
+  line-height: 1.6;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  box-sizing: border-box;
+}
+
 tr {
   font-family: Helvetica,Arial,sans-serif;
   letter-spacing: .01em;
