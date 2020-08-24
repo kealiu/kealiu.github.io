@@ -1,47 +1,48 @@
 ---
 layout: post
-title: AWS CodeGuru Reviewer 介绍
+title: AWS CodeGuru Profiler 介绍
 category: AWS
 tags: AWS CodeGuru CI
 ---
 
-# AWS CodeGuru Reviewer是什么
+# AWS CodeGuru Profiler 是什么
 
-CodeGuru是AWS近期推出的，基于机器学习的代码分析及性能分析工具。其中Reviewer主要用于代码提交是的code review以及整个代码仓库的代码分析。CodeGuru现在只支持Java，未来可能推出其他语言的支持。
+CodeGuru是AWS近期推出的，基于机器学习的代码分析及性能分析工具。其中Profiler类似于JProfiler，但CodeGuru Profiler将采集到的运行数据上传到AWS CodeGuru服务，再由CodeGuru服务进行汇总，通过机器学习做深入分析，用以发现应用性能瓶颈，帮助用户提升应用效率。CodeGuru现在只支持Java系列（所有跑在JVM中的语言），未来会推出其他语言的支持。
 
-## CodeGuru Reviewer 所解决的问题
+## CodeGuru Profiler 所解决的问题
 
-我们常见的研发流程如下图。CodeGuru Reviewer 通过自动化的code review，解决现在 code review流程走形式、浪费大量人力、结果不理想的问题。
+我们常见的研发流程如下图。CodeGuru Profiler 通过无侵入收集应用运行数据，再结合大数据分析，帮助用户实时了解程序运行状态。
 
 ![Devlopping Cycle](https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2020/02/28/DevWorkflow.png)
 
-## CodeGuru Reviewer的能力 
-Reviewer主要包含了以下方面的代码分析：
-- AWS最佳实践
-- 程序并发
-- 资源泄露
-- 敏感信息泄露
-- 编码规范
-- 输入校验
+## CodeGuru Profiler的能力 
+CodeGuru Profiler提供了统一的Profiler管理分析中心及对应的看板，主要包含了以下方面的能力：
+- 应用时延及CPU使用率问题分析
+- 帮助提升基础设施使用率
+- 及时发现应用性能问题
 
-### 支持的git仓库
+### 支持的接入方式
 
-现阶段，AWS CodeGuru Reviewer支持以下git仓库
-- AWS CodeCommit
-- Bitbucket
-- GitHub
-- GitHub Enterprise Cloud
-- GitHub Enterprise Server
+现阶段，AWS CodeGuru Profiler支持无侵入接入，也支持通过SDK添加代码接入。
 
-仓库类型再不断增加中，以实际情况为准。
+| 场景                         | 命令行无侵入                      | SDK代码                       |
+|--------------------------------|------------------------------------|----------------------------|
+| 对已经存在的应用做Profile   | Yes                                | No (需要重新编译) |
+| 自定义鉴权信息 | No                                 | Yes                        |
+| 控制Profile时间及覆盖范围 | No (从开始到应用推出) | Yes                        |
+| 功能自动更新             | No (需要下载最新的Agent)           | Yes (下次编译后) |
+
+CodeGuru 是全球服务，用户应用可以运行在任何环境，只要CodeGuru Agent/SDK能将Profile数据上传到支持CodeGuru的Region即可（网络可达）。
 
 ## CodeGuru 最佳实践
 
-在引入了CodeGuru后（含CodeGuru Profiler)，建议采用以下最佳实践流程
+在引入了CodeGuru后（含CodeGuru Reviewer)，建议采用以下最佳实践流程
 
 ![Devloper workflow with CodeGuru](https://d2908q01vomqb2.cloudfront.net/7719a1c782a1ba91c031a682a0a2f8658209adbf/2020/02/28/bigPicture.png)
 
-# CodeGuru Review 实战
+# CodeGuru Profiler 实战
+
+本次Demo基于官方示例代码进行。代码包含两部分：生产者产生任务，消费者消费任务。使用SQS进行任务传递。任务内容为图片处理（CPU密集 & IO密集）。可以参考我fork的代码：https://github.com/kealiu/aws-codeguru-profiler-demo-application
 
 ## 登录进入 CodeGuru
 
@@ -49,63 +50,137 @@ Reviewer主要包含了以下方面的代码分析：
 
 ![CodeGuru Console](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/ConsoleMain.JPG)
 
-## 关联 git 仓库
+选择Profiler，即可进入CodeGuru Profiler界面，如图所示：
+![CodeGuru Profiler Console](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuruProfiler/CodeGuruProfilerConsole.png)
 
-进入CodeReviewer后，我们首先需要关联git仓库。 
-- 如果是AWS CodeCommit，直接在最下方选择仓库即可
-- 如果是Bitbucket/GitHub等，需要先通过OAUTH进行授权，以GitHub为例
-    - 点击“Connect to GitHub"
-    - 在弹出的对话框中登录 Github
-    - 成功登录后，确认授权给AWS
-    - 等待关联成功
+## 创建Profiling Group
 
-![Assocaiate Repo](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/associate_repo.JPG)
+一个Profiling Group是会被CodeGuru当作一个整体来进行分析。一个Profiling Group可以有多个应用信息，建议将相关联的应用放在一个Profiling Group。
+
+![Create CodeGuru Profiler Group](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuruProfiler/CodeGuruNewProfileGroup.png)
+
+## 下载sample代码
+
+为了保证示例代码于本文一致，我把官方代码fork了一份。大家可以clone一下代码到本地。
+
+```bash
+git clone git@github.com:kealiu/amazon-codeguru-reviewer-sample-app.git
+```
+
+## 准备环境
+
+因为需要配置SQS以及S3，本Demo使用AWS CLI（当然，你也可以使用控制台创建）
+
+按照AWS CLI详见 https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
+
+```bash
+# 配置AWS 认证鉴权信息
+aws configure
+
+# 创建CodeGroup Profiling Group
+aws codeguruprofiler create-profiling-group --profiling-group-name DemoApplication-WithIssues
+
+# 创建另外一个CodeGroup Profiling Group
+aws codeguruprofiler create-profiling-group --profiling-group-name DemoApplication-WithoutIssues
+
+# 创建程序依赖的S3 bucket
+aws s3 mb s3://demo-application-test-bucket-1092734-REPLACE-ME
+
+# 创建程序依赖的 SQS
+aws sqs create-queue --queue-name DemoApplicationQueue
+```
+
+## 管理Profiling Group 权限
+
+再运行程序之前，我们必须确认，程序有相应的CodeGuru Profiling Group的权限。如果是运行于AWS上的EC2，我们可以通过绑定Role到EC2，然后赋予对应Role Profiling Group权限。否则，根据程序配置的用户信息，赋予对应IAM用户权限。
+
+在CodeGuru Profiling Console，选择Profiling Group后，点击Action进入权限管理，如图所示：
+
+![Entering CodeGuru Profiling Groupo Permission Management](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuruProfiler/EnterProflngGroupPermission.png)
+
+在权限管理中， 添加程序对于的Role或者IAM 用户：
+![CodeGuru Profiling Groupo Permission Management](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuruProfiler/ProfilerManagerPermission.png)
+
+## 运行示例程序
+
+配置好环境后，可以分别运行有问题（会有错误日志）、正常版本进行对比。
+
+### 环境准备
+
+根据你的实际情况，替换下面脚本中的`YOUR-ACCOUNT-ID`, `demo-application-test-bucket-1092734-YOUR-BUCKET-REPLACE-ME`, `YOUR-AWS-REGION`
+
+```
+# 配置SQS地址环境变量
+export DEMO_APP_SQS_URL=https://sqs.YOUR-AWS-REGION.queue.amazonaws.com/YOUR-ACCOUNT-ID/DemoApplicationQueue
+
+# 配置S3 Bucket环境变量
+export DEMO_APP_BUCKET_NAME=demo-application-test-bucket-1092734-YOUR-BUCKET-REPLACE-ME
+
+# 配置CodeGuru Profiling Group所在的区域
+export AWS_CODEGURU_PROFILER_TARGET_REGION=YOUR-AWS-REGION
+
+# 配置CodeGuru Proling Group名称
+export AWS_CODEGURU_PROFILER_GROUP_NAME=DemoApplication-WithIssues
+
+# 编译示例程序 `DemoApplication-1.0-jar-with-dependencies.jar`
+mvn clean install
+```
+
+### 运行程序的问题版本
+```
+java -javaagent:codeguru-profiler-java-agent-standalone-1.0.0.jar \
+  -jar target/DemoApplication-1.0-jar-with-dependencies.jar with-issues
+```
+
+允许过程中，会看到`Expensive exception`, `Pointless work` 等error信息。这是预期的效果。
+
+### 运行程序的正常版本
+```
+java -javaagent:codeguru-profiler-java-agent-standalone-1.0.0.jar \
+  -jar target/DemoApplication-1.0-jar-with-dependencies.jar without-issues
+```
+
+### 等待分析结果
+
+如果一切顺利，程序会将Profiling 数据上传到CodeGuru，大概5到15分钟后，在收集到足够数据后，CodeGuru会产生分析结果。
+
+数据结果以火焰图的方式展示，火焰图的详细介绍可以参考 https://www.ruanyifeng.com/blog/2017/09/flame-graph.html。
+
+分析火焰图的展示方式有Overview/Hotspots与CPU/Latency两个维度：
 
 
-## 代码Review
+ /  | CPU | Latency
+---|---|---
+概览 | CPU标准火焰图 | Latency标准火焰图
+热点 | CPU热点图，与标准火焰图相反 |  Latency热点图，与标准火焰图相反
 
-CodeGuru有两种Review模式：
-- 一种是增量模式，每次进行提交代码时进行。适合于日常开发。
-- 一种是全量模式，可以自行决定扫描时间，非常适合定期代码全量检查。
+火焰图中，根据颜色，对`My Code`（自己写的代码），`Other code`（库代码）进行了区分，方便快速定位性能问题类型。
 
-### PR/增量 Review
+标准火焰图中，顶部出现平坦，意味着性能问题。理想状态下应该都是尖峰。通过逐步消除顶部平坦，进行性能优化。
 
-在PR模式下，开发在开发分支进行代码编写。完成后，提交Pull Requests合并到生产分支。这个时候会促发CodeGuru进行代码Review。
+#### CPU性能分析
 
-![PullRequest](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/PullRequests.JPG)
+![CPU Profling](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuruProfiler/ProfilerCPU.png)
 
+#### Latency性能分析
 
-以 https://github.com/kealiu/amazon-codeguru-reviewer-sample-app 为例，我在dev分支进行了代码修改，准备合并到master分支，所以，我创建了一个Pull Requests，如图
+![Latency Profling](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuruProfiler/ProfilerLatency.png)
 
-![CodeReview](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/CodeReview.JPG)
+### 改进措施推荐
 
-在提交PullRequests后，CodeGuru会自动检测到该PullRequest并自动进行CodeReview。Review的进度及结果可以在 AWS 控制台CodeGuru Reviewer下面的 Code Reviews中看到。
+分析结果还包含了整改措施，给用户提出一些整改意见，帮助用户消除程序潜在性能问题。
 
-![CodeReviewResult](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/CodeReviewResult.JPG)
+![Recommendations](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuruProfiler/ProfilerRecommendations.png)
 
-在CodeGuru 分析完成后，我们可以在Code Reviewer中看到，也可以在GitHub上看到对应的comments. 开发可以根据结果进行调整，再合并代码。
-![Comments In GitHub](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/comments.JPG)
+# CodeGuru Profiler价格
 
-### 全量Review
+按每实例每小时收费。一个实例就是一个运行CodeGuru Client的运行中的程序。
 
-在CodeGuru Review界面，我们可以进入 Repository analysis 界面，进行全量的代码扫描分析。点击Create Repository Analysis，进入下面的创建页面。
-
-![RepoReview](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/code-repo.JPG)
-
-选择已经关联的代码仓库，然后输入期望扫描的分支，创建代码扫描。
-
-![ReviewSelect](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/create_repo_review.JPG)
-
-等待一小会，扫描完成后点击对应的分析项，即可进入查看详情。内容与PR扫描类似。
-
-# CodeGuru 价格
-
- / | 前1500000行 | 超出1500000行
+ / | 36,000小时内 | 超过36,000小时
 ---|--- |---
-全量Repo分析 | $0.5/100行 | $0.4/100行
-PR/增量 | $0.75/100行 | $0.75/100行
+Lambda	 | $0.005/小时 | 该月免费
+非Lambda（EC2，EKS，etc）| $0.005/小时 | 该月免费
 
 # 总结
 
-GuruCode Review帮助客户提早发现代码问题，提升代码质量，减少线上故障。CodeGuru 目前支持 Java 应用程序，很快还会支持更多的语言。CodeGuru 可帮助您更快、更早地发现问题，以便您可以构建和运行更出色的软件。
-
+GuruCode Guru通过集中收集程序运行数据，帮助用户提升运行时性能，减少性能瓶颈，最终帮助提升用户体验，消除潜在风险，减少资源浪费。CodeGuru 目前支持 Java 应用程序，很快还会支持更多的语言。
