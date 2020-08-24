@@ -75,7 +75,7 @@ CodeGuru有两种Review模式：
 ![PullRequest](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/PullRequests.JPG)
 
 
-以 https://github.com/kealiu/amazon-codeguru-reviewer-sample-app 为例，我在dev分支进行了代码修改，准备合并到master分支，所以，我创建了一个Pull Requests，如图
+以 [https://github.com/kealiu/amazon-codeguru-reviewer-sample-app](https://github.com/kealiu/amazon-codeguru-reviewer-sample-app) 为例，我在dev分支进行了代码修改，准备合并到master分支，所以，我创建了一个Pull Requests，如图
 
 ![CodeReview](https://raw.githubusercontent.com/kealiu/kealiu.github.io/master/images/2020-08-22-CodeGuru/CodeReview.JPG)
 

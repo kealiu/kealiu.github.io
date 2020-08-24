@@ -42,7 +42,7 @@ CodeGuru 是全球服务，用户应用可以运行在任何环境，只要CodeG
 
 # CodeGuru Profiler 实战
 
-本次Demo基于官方示例代码进行。代码包含两部分：生产者产生任务，消费者消费任务。使用SQS进行任务传递。任务内容为图片处理（CPU密集 & IO密集）。可以参考我fork的代码：https://github.com/kealiu/aws-codeguru-profiler-demo-application
+本次Demo基于官方示例代码进行。代码包含两部分：生产者产生任务，消费者消费任务。使用SQS进行任务传递。任务内容为图片处理（CPU密集 & IO密集）。可以参考我fork的代码：[https://github.com/kealiu/aws-codeguru-profiler-demo-application](https://github.com/kealiu/aws-codeguru-profiler-demo-application)
 
 ## 登录进入 CodeGuru
 
@@ -71,7 +71,7 @@ git clone git@github.com:kealiu/amazon-codeguru-reviewer-sample-app.git
 
 因为需要配置SQS以及S3，本Demo使用AWS CLI（当然，你也可以使用控制台创建）
 
-按照AWS CLI详见 https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
+按照AWS CLI详见 [https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
 
 ```bash
 # 配置AWS 认证鉴权信息
@@ -144,7 +144,7 @@ java -javaagent:codeguru-profiler-java-agent-standalone-1.0.0.jar \
 
 如果一切顺利，程序会将Profiling 数据上传到CodeGuru，大概5到15分钟后，在收集到足够数据后，CodeGuru会产生分析结果。
 
-数据结果以火焰图的方式展示，火焰图的详细介绍可以参考 https://www.ruanyifeng.com/blog/2017/09/flame-graph.html。
+数据结果以火焰图的方式展示，火焰图的详细介绍可以参考 [https://www.ruanyifeng.com/blog/2017/09/flame-graph.html](https://www.ruanyifeng.com/blog/2017/09/flame-graph.html) 。
 
 分析火焰图的展示方式有Overview/Hotspots与CPU/Latency两个维度：
 
