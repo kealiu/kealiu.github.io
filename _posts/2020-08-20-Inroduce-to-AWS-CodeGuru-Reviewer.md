@@ -7,7 +7,7 @@ tags: AWS CodeGuru CI
 
 # AWS CodeGuru Reviewer是什么
 
-CodeGuru是AWS近期推出的，基于机器学习的代码分析及性能分析工具。其中Reviewer主要用于代码提交是的code review以及整个代码仓库的代码分析。CodeGuru现在只支持Java，未来可能推出其他语言的支持。
+CodeGuru是AWS近期推出的，基于机器学习的代码分析及性能分析工具。其中Reviewer主要用于代码提交是的code review以及整个代码仓库的代码分析。CodeGuru现在只支持Java，未来会推出其他语言的支持。
 
 ## CodeGuru Reviewer 所解决的问题
 
@@ -33,7 +33,7 @@ Reviewer主要包含了以下方面的代码分析：
 - GitHub Enterprise Cloud
 - GitHub Enterprise Server
 
-仓库类型再不断增加中，以实际情况为准。
+仓库类型在不断增加中，以实际情况为准。
 
 ## CodeGuru 最佳实践
 
