@@ -237,6 +237,62 @@ nav {
   }
 }
 
+table {
+  font-family: Helvetica,Arial,sans-serif;
+  letter-spacing: .01em;
+  color: #777;
+  line-height: 1.6;
+  box-sizing: border-box;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  border: 1px solid #cbcbcb;
+}
+
+thead {
+  font-family: Helvetica,Arial,sans-serif;
+  letter-spacing: .01em;
+  line-height: 1.6;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  box-sizing: border-box;
+  background-color: #e0e0e0;
+  color: #000;
+  text-align: left;
+  vertical-align: bottom;
+}
+
+tr {
+  font-family: Helvetica,Arial,sans-serif;
+  letter-spacing: .01em;
+  line-height: 1.6;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  color: #000;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+th {
+  font-family: Helvetica,Arial,sans-serif;
+  letter-spacing: .01em;
+  line-height: 1.6;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  color: #000;
+  box-sizing: border-box;
+  border-left: 1px solid #cbcbcb;
+  border-bottom-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  font-size: inherit;
+  margin: 0;
+  overflow: visible;
+  padding: .5em 1em;
+}
 //
 // .main
 //
