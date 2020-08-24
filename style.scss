@@ -297,14 +297,28 @@ th {
   empty-cells: show;
   color: #000;
   box-sizing: border-box;
-  border-left: 1px solid #cbcbcb;
-  border-bottom-width: 1px;
-  border-right-width: 1px;
-  border-top-width: 1px;
+  border: 1px solid #cbcbcb;
   font-size: inherit;
   margin: 0;
   overflow: visible;
   padding: .5em 1em;
+}
+
+td {
+font-family: Helvetica,Arial,sans-serif;
+letter-spacing: .01em;
+color: #777;
+line-height: 1.6;
+border-collapse: collapse;
+border-spacing: 0;
+empty-cells: show;
+box-sizing: border-box;
+border: 1px solid #cbcbcb;
+font-size: inherit;
+margin: 0;
+overflow: visible;
+background-color: #f2f2f2;
+padding: .5em 1em;
 }
 //
 // .main
