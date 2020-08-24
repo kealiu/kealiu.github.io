@@ -178,7 +178,7 @@ java -javaagent:codeguru-profiler-java-agent-standalone-1.0.0.jar \
 
  / | 36,000小时内 | 超过36,000小时
 ---|--- |---
-Lambda	 | $0.005/小时 | 该月免费
+Lambda	 | 前500小时免费，之后$0.005/小时 | 该月免费
 非Lambda（EC2，EKS，etc）| $0.005/小时 | 该月免费
 
 # 总结
