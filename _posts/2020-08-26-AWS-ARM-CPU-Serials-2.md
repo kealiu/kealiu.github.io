@@ -62,9 +62,11 @@ $node index.js
 Hooray!  The addon worked as expected
 ```
 
-## 验证结果
+## 验证结论
 
-测试代码repo内还包含其他demo，可以自行进入目录后执行`npm install`，然后执行对应的 `node demo-name.js` 。如 `objectwrap_nan` demo
+验证都可以很顺利的通过。对于其他case，也可以自行测试。
+
+例子测试代码repo内还包含其他demo，可以自行进入目录后执行`npm install`，然后执行对应的 `node demo-name.js` 。如 `objectwrap_nan` demo
 
 ```
 ..nodecpp-demo/objectwrap_nan$ npm install
@@ -85,7 +87,7 @@ npm WARN primes@1.0.0 No repository field.
 [ -1, -2 ]
 28
 Polynomial { c: 0, b: 3, a: 1 }
-ubuntu@ip-172-31-3-251:~/nodejs/nodecpp-demo/objectwrap_nan$
+
 ```
 
 # 总结
