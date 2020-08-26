@@ -14,8 +14,6 @@ ARM CPU相关介绍，请参考： [AWS ARM CPU 简介](https://kealiu.github.io
 
 ### node-addon简介
 
-Addons are dynamically-linked shared objects written in C++. The require() function can load addons as ordinary Node.js modules. Addons provide an interface between JavaScript and C/C++ libraries.
-
 addons 是用`C++`编写的动态链接库文件(`.so`)。 `require（）`函数可以将.so加载项作为普通的`Node.js`模块加载。 addons实现了`JavaScript`调用`C/C++` lib 的接口。
 
 # 验证测试
