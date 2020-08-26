@@ -308,7 +308,7 @@ Tot:             188   2700   5013
 
 # 价格比较
 
-以测试所用机器在美国ohio的价格为基准进行比较
+以测试所用机器在美国ohio的价格为基准进行比较。全部定价请参考[AWS EC2官网价格](https://aws.amazon.com/cn/ec2/pricing/on-demand/)
 
 
 实例 | 价格
