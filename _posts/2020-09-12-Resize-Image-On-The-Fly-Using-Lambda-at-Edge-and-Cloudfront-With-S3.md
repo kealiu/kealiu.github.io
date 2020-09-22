@@ -361,7 +361,7 @@ exports.handler = (event, context, callback) => {
 sudo apt-get install -y docker.io
 
 # build nodejs docker打包环境
-sudo docker build --tag amazonlinux:nodejs
+sudo docker build --tag amazonlinux:nodejs .
 
 # 运行build，安装下载相应的软件环境
 sudo docker run --rm --volume ${PWD}/lambda/origin-response-function:/build amazonlinux:nodejs /bin/bash -c "source ~/.bashrc; npm init -f -y; npm install sharp --save; npm install querystring --save; npm install --only=prod"
