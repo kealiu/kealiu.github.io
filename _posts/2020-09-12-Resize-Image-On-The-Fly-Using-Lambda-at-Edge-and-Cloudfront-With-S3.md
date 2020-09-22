@@ -1,7 +1,7 @@
 
 简介：通过cloudfront lambda@edge 实现s3 静态图片的动态尺寸调整
 
-# 背景
+## 背景
 
 静态网站是指全部由HTML（标准通用标记语言的子集）代码格式页面组成的网站，所有的内容包含在网页文件中。网页上也可以出现各种视觉动态效果，如GIF动画、FLASH动画、滚动字幕等，而网站主要是静态化的页面和代码组成，一般文件名均以htm、html、shtml等为后缀。
 
@@ -359,6 +359,9 @@ exports.handler = (event, context, callback) => {
 
 # 安装docker
 sudo apt-get install -y docker.io
+
+# build nodejs docker打包环境
+sudo docker build --tag amazonlinux:nodejs
 
 # 运行build，安装下载相应的软件环境
 sudo docker run --rm --volume ${PWD}/lambda/origin-response-function:/build amazonlinux:nodejs /bin/bash -c "source ~/.bashrc; npm init -f -y; npm install sharp --save; npm install querystring --save; npm install --only=prod"
