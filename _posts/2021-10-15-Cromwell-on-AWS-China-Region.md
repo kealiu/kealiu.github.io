@@ -2,10 +2,24 @@
 
 [Github Repo](https://github.com/kealiu/aws-genomics-workflow-cromwell-nwcd)
 
+## 下载&解压代码
+
+将 [代码repo](https://github.com/kealiu/aws-genomics-workflow-cromwell-nwcd) 。推荐Github `Download Zip` 方式直接下载 zip 包。并解压
+
+**特别注意**
+> 因为github大文件上传下载有限制。所以，解压完成后的大文件是有问题的！
+> 
+> **需要人工下载** `nwcdcromwell/artifacts/cromwell-aws-proxy.tar` 与 `nwcdcromwell/artifacts/ecs-agent-cromwell.tar` **覆盖解压后的文件**（解压出来的文件实际上只是一个文本记录了版本号）
+> 
+> - [nwcdcromwell/artifacts/cromwell-aws-proxy.tar](https://github.com/kealiu/aws-genomics-workflow-cromwell-nwcd/raw/master/nwcdcromwell/artifacts/cromwell-aws-proxy.tar)
+> - [nwcdcromwell/artifacts/ecs-agent-cromwell.tar](https://github.com/kealiu/aws-genomics-workflow-cromwell-nwcd/raw/master/nwcdcromwell/artifacts/ecs-agent-cromwell.tar)
+
 ## 代码 S3 Bucket
 
-上传代码到s3 bucket: 因为cloudformation yaml模版以及自定义的文件、script需要能够下载，所以，我们需要讲本repo代码上传到一个s3 bucket。可以新建或者用已有的，确保当前使用的`aws iam user` 有对应的bucket访问权限。将 `nwcdcromwell` 目录上传到你的S3 `Bucket`。 
-    1. 通过web UI 方式上传：
+上传代码到s3 bucket: 因为cloudformation yaml模版以及自定义的文件、script需要能够在国内下载，考虑到备案等问题，我们采用s3来存储。 
+
+所以，我们需要将本repo代码上传到一个s3 bucket。可以新建或者用已有的，确保当前使用的`aws iam user` 有对应的bucket访问权限。将 `nwcdcromwell` 目录上传到你的S3 `Bucket`。 以下用 `code-bucket-name` 引用该bucket。
+    1. 通过web UI 方式上传。可以直接拖放到S3 bucket页面，或者`Add Folder`方式：
         ![code-s3-bucket-upload-folder](https://github.com/kealiu/aws-genomics-workflow-cromwell-nwcd/raw/master/docs/images/code-s3-bucket-upload-folder.png)
     1. 通过 `aws cli` 方式上传: `aws s3 cp -r nwcdcromwell s3://<your-bucket>/`
 
@@ -23,24 +37,25 @@ Cromwell运行需要使用到s3，可以新建或者用已有的，确保当前�
     ![cf-create-stack](https://github.com/kealiu/aws-genomics-workflow-cromwell-nwcd/raw/master/docs/images/cf-create-stack.png)
 1. 填入stack名字（英文）
 1. 填写参数，具体说明如下：
-    1. S3 Bucket Name: Cromwell 用的S3 Bucket
-    1. Existing Bucket?: Bucket是否存在。由于s3 bucket名字需要AWS全局唯一，所以使用以及建好的Bucket
-    1. Template Root URL: cloudformation子模块的目录。等于 `nwcdcromwell\cn-gwfcore-root.template.yaml` 的URL去掉最后的`\cn-gwfcore-root.template.yaml`。如 `https://<code-bucket-name>.s3.cn-northwest-1.amazonaws.com.cn/nwcdcromwell`
-    1. S3 Pathname of Artifacts： 一些script以及辅助文件存储位置。一般为 `s3://<code-bucket-name>/nwcdcromwell/artifacts`
+    1. S3 Bucket Name: Cromwell 用于存放分析结果的S3 Bucket。建议提前创建好。
+    1. Existing Bucket?: Bucket是否存在。由于s3 bucket名字需要AWS全局唯一，所以使用以及建好的Bucket。
+    1. Template Root URL: cloudformation子模块的目录。等于 `nwcdcromwell\cn-gwfcore-root.template.yaml` 的URL去掉最后的`\cn-gwfcore-root.template.yaml`。如 `https://<your-code-bucket-name>.s3.cn-northwest-1.amazonaws.com.cn/nwcdcromwell`
+    1. S3 Pathname of Artifacts： 一些script以及辅助文件存储位置。一般为 `s3://<your-code-bucket-name>/nwcdcromwell/artifacts`
     1. VPC ID / VPC Subnet IDs: 运行的网络环境
     1. Keypaire For Login Cromwell Server: 服务器的登陆 key。后面要用该 key 登陆服务器。
     1. Database Username: 数据库用户名
     1. Database Password: 数据库密码
     1. Namespace: 可选，服务名字
-    1. Default Min vCPU: 默认任务最小CPU，可以不修改，或按实际情况填写。
-    1. Default Max vCPU: 默认任务最大CPU，可以不修改，或按实际情况填写。
-    1. High Priority Min vCPU: 高优先级任务最小CPU，可以不修改，或按实际情况填写。
-    1. High Priority Max vCPU: 高优先级任务最大CPU，可以不修改，或按实际情况填写。
-    1. Artifact S3 Bucket Name / Artifact S3 Prefix: 公共文件下载处。不建议修改
-    1. The Cromwell Server Instance Type: Cromwell Server的配置。建议使用默认
+    1. The Cromwell Server Instance Type: Cromwell Server的配置。建议使用默认。
     1. DockerStorageVolumeSize: 运行任务的磁盘空间。建议根据分析文件的数据大小填写。注意：如太小会导致任务因为磁盘空间不够而失败。
+    1. Default Min vCPU: 默认任务最小CPU，可以不修改，或按实际情况填写。
+    1. Default Max vCPU: 默认任务最大CPU，可以不修改，或按实际情况填写。注意如果超过 AWS EC2 Spot vCPU limit，会创建机器失败。建议提前提升limit。
+    1. High Priority Min vCPU: 高优先级任务最小CPU，可以不修改，或按实际情况填写。
+    1. High Priority Max vCPU: 高优先级任务最大CPU，可以不修改，或按实际情况填写。注意如果超过 AWS EC2 Ondemand vCPU limit，会创建机器失败。建议提前提升limit。
+    1. Artifact S3 Bucket Name / Artifact S3 Prefix: 公共文件下载处。不建议修改。
 1. 下一步，根据情况修改
-1. 创建前Review。 注意：最下面的两个 check box 一定要勾选。 然后创建。等待环境搭建完成
+1. 创建前Review。 **注意：最下面的两个 check box 一定要勾选。** 然后创建。等待大概15分钟环境搭建完成。
+1. 如果创建出错，可以通过stack 详情页面的 `Events` tab页面查看出错详情。
 1. 记录下创建完成后的`PublicIp`。该IP为Cromwell Server的运行IP
     ![cf-stack-output](https://github.com/kealiu/aws-genomics-workflow-cromwell-nwcd/raw/master/docs/images/cf-stack-output.png)
 
@@ -77,7 +92,7 @@ curl -X POST "http://localhost:8000/api/workflows/v1" \
 
 ### 准备数据
 
-将数据同步到自己的Bucket： `aws s3 sync s3://gatk-test-data s3://yourbucket/ --region cn-northwest-1`
+将数据同步到自己的Bucket： `aws s3 sync s3://aws-genomics-workflows-test s3://yourbucket/ --region cn-northwest-1`
 
 ### 修改配置文件
 
