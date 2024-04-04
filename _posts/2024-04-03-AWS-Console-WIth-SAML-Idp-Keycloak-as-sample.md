@@ -7,6 +7,13 @@
 
 ## 配置 keycloak
 
+总体流程：
+1. 下载aws saml meta，在keycloak内添加client
+2. 修改、配置client
+3. 在 aws 内，添加IdP，saml meta来自keycloak realm
+4. 在 aws 内，配置可以供idp使用的role
+5. 在 keycloak 内，配置 client role/user role
+
 ### 创建realm
 
 realm是keycloak的一个用户域。 具体创建参考 keycloak 文档
