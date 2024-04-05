@@ -1,4 +1,6 @@
-# AWS Cognito 使用 keycloak 作为SAML IdP
+# AWS Cognito 使用 keycloak 作为OIDC IdP
+
+记录如何使用keycloak配合 cognito使用。
 
 ## 安装 keycloak
 
